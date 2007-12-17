@@ -9,7 +9,6 @@ Group: System/Internationalization
 Source: http://www.infodrom.org/projects/manpages-de/download/manpages-de-%{version}.tar.bz2  
 Patch1: man-pages-de-0.3-nolocalfile.patch
 URL: http://www.infodrom.org/projects/manpages-de/
-Buildroot: %_tmppath/%name-root
 BuildRequires: man => 1.5j-8mdk
 Requires: locales-%LANG, man => 1.5j-8mdk
 BuildArch: noarch
