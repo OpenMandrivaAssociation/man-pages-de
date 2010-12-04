@@ -3,7 +3,7 @@
 Summary: German man (manual) pages from the Linux Documentation Project
 Name: man-pages-%LANG
 Version: 0.5
-Release: %mkrel 6
+Release: %mkrel 7
 License: Distributable
 Group: System/Internationalization
 Source: http://www.infodrom.org/projects/manpages-de/download/manpages-de-%{version}.tar.bz2  
