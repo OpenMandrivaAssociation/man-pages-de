@@ -1,20 +1,24 @@
-%define LNG de
+%define	LNG de
+%define	gitrevision aeb3e35
+%define	srcname manpages-%{LNG}
 
-Summary: German man (manual) pages from the Linux Documentation Project
-Name: man-pages-%LNG
-Version: 0.5
-Release: %mkrel 9
-License: Distributable
-Group: System/Internationalization
-Source: http://www.infodrom.org/projects/manpages-de/download/manpages-de-%{version}.tar.bz2  
-Patch1: man-pages-de-0.3-nolocalfile.patch
-URL: http://www.infodrom.org/projects/manpages-de/
+Name:		man-pages-%{LNG}
+Version:	0.9
+Release:	%mkrel 1
+Summary:	German man (manual) pages from the Linux Documentation Project
+License:	Distributable
+Group:		System/Internationalization
+Url:		http://alioth.debian.org/projects/manpages-de/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires: man => 1.5j-8mdk
-Requires: locales-%LNG, man => 1.5j-8mdk
-BuildArch: noarch
-Obsoletes: man-%LNG, manpages-%LNG
-Provides: man-%LNG, manpages-%LNG
+BuildArch:	noarch
+Source0:	%{srcname}-%{gitrevision}.tar.gz
+BuildRequires:	man
+Requires:	locales-%{LNG}
+Requires:	man
+Obsoletes:	man-%{LNG}
+Obsoletes:	manpages-%{LNG}
+Provides:	man-%{LNG}
+Provides:	manpages-%{LNG}
 
 %description
 A large collection of man pages (reference material) from the Linux 
@@ -32,61 +36,60 @@ organized into the following sections:
         Section 8:  System administration (intro only)
 
 %prep
-%setup -q -n manpages-de-%{version}
-%patch1 -p1
+%setup -q -n %{srcname}-%{gitrevision}
 
 %build
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/%_mandir/%LNG/man{1,2,3,4,5,6,7,8,9,n}
-mkdir -p %{buildroot}/var/catman/%LNG/cat{1,2,3,4,5,6,7,8,9,n}
+mkdir -p %{buildroot}/%{_mandir}/%{LNG}/man{1,2,3,4,5,6,7,8,9,n}
+mkdir -p %{buildroot}%{_var}/catman/%{LNG}/cat{1,2,3,4,5,6,7,8,9,n}
 
 for i in 1 2 3 4 5 6 7 8; do
-	cp -adpvrf man$i %{buildroot}/%_mandir/%LNG/
+	if [ -d man$i ] ; then
+		cp -avf man$i %{buildroot}%{_mandir}/%{LNG}/
+	else
+		echo "man$i does not exist"
+	fi
 done
 
 # those files conflict whith net-tools
-rm %{buildroot}/%_mandir/de/man1/hostname.1
+# nothing to remove for now
 
-LANG=%LNG DESTDIR=%{buildroot} %{_sbindir}/makewhatis %{buildroot}/%_mandir/%LNG
+LANG=%{LNG} DESTDIR=%{buildroot} %{_sbindir}/makewhatis %{buildroot}/%{_mandir}/%{LNG}
 
 mkdir -p %{buildroot}%{_sysconfdir}/cron.weekly
-cat > %{buildroot}%{_sysconfdir}/cron.weekly/makewhatis-%LNG.cron << EOF
+cat > %{buildroot}%{_sysconfdir}/cron.weekly/makewhatis-%{LNG}.cron << EOF
 #!/bin/bash
-LANG=%LNG %{_sbindir}/makewhatis %_mandir/%LNG
+LANG=%{LNG} %{_sbindir}/makewhatis %{_mandir}/%{LNG}
 exit 0
 EOF
-chmod a+x %{buildroot}%{_sysconfdir}/cron.weekly/makewhatis-%LNG.cron
+chmod a+x %{buildroot}%{_sysconfdir}/cron.weekly/makewhatis-%{LNG}.cron
 
-mkdir -p  %{buildroot}/var/cache/man/%LNG
+mkdir -p  %{buildroot}%{_var}/cache/man/%{LNG}
 
-touch %{buildroot}/var/cache/man/%LNG/whatis
+touch %{buildroot}%{_var}/cache/man/%{LNG}/whatis
 
 %postun
 # 0 means deleting the package
 if [ "$1" = "0" ]; then
-   ## Force removing of /var/catman/%LNG, if there isn't any man page
-   ## directory /%_mandir/%LNG
-   if [ ! -d %_mandir/%LNG ] ; then
-       rm -rf /var/catman/%LNG
+   ## Force removing of /var/catman/%{LNG}, if there isn't any man page
+   ## directory /%{_mandir}/%{LNG}
+   if [ ! -d %{_mandir}/%{LNG} ] ; then
+       rm -rf %{_var}/catman/%{LNG}
    fi
 fi
 
 %post
-%create_ghostfile /var/cache/man/%LNG/whatis root root 644
-
-%clean
-rm -rf %{buildroot}
+%create_ghostfile %{_var}/cache/man/%{LNG}/whatis root root 644
 
 %files
-%defattr(0644,root,man, 0755)
 %doc CHANGES README COPYRIGHT
-%defattr(0644,root,man, 755)
-%dir %_mandir/%LNG
-%dir /var/cache/man/%LNG
-%ghost %config(noreplace) /var/cache/man/%LNG/whatis
-%_mandir/%LNG/man*
-%_mandir/%LNG/whatis
-%attr(755,root,man) /var/catman/%LNG
-%config(noreplace) %attr(755,root,root) %{_sysconfdir}/cron.weekly/makewhatis-%LNG.cron
+%dir %{_mandir}/%{LNG}
+%dir %{_var}/cache/man/%{LNG}
+%ghost %config(noreplace) %{_var}/cache/man/%{LNG}/whatis
+%{_mandir}/%{LNG}/man*
+%{_mandir}/%{LNG}/whatis
+%attr(755,root,man) %{_var}/catman/%{LNG}
+%config(noreplace) %attr(755,root,root) %{_sysconfdir}/cron.weekly/makewhatis-%{LNG}.cron
+
