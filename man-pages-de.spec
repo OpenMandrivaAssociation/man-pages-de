@@ -4,7 +4,7 @@
 
 Name:		man-pages-%{LNG}
 Version:	0.9
-Release:	%mkrel 1
+Release:	2
 Summary:	German man (manual) pages from the Linux Documentation Project
 License:	Distributable
 Group:		System/Internationalization
@@ -56,12 +56,12 @@ done
 # those files conflict whith net-tools
 # nothing to remove for now
 
-LANG=%{LNG} DESTDIR=%{buildroot} %{_sbindir}/makewhatis %{buildroot}/%{_mandir}/%{LNG}
+LANG=%{LNG} DESTDIR=%{buildroot} %{_bindir}/mandb %{buildroot}/%{_mandir}/%{LNG}
 
 mkdir -p %{buildroot}%{_sysconfdir}/cron.weekly
 cat > %{buildroot}%{_sysconfdir}/cron.weekly/makewhatis-%{LNG}.cron << EOF
 #!/bin/bash
-LANG=%{LNG} %{_sbindir}/makewhatis %{_mandir}/%{LNG}
+LANG=%{LNG} %{_bindir}/mandb %{_mandir}/%{LNG}
 exit 0
 EOF
 chmod a+x %{buildroot}%{_sysconfdir}/cron.weekly/makewhatis-%{LNG}.cron
