@@ -5,7 +5,7 @@
 Summary:	German man (manual) pages from the Linux Documentation Project
 Name:		man-pages-%{LNG}
 Version:	0.9
-Release:	7
+Release:	8
 License:	Distributable
 Group:		System/Internationalization
 Url:		http://alioth.debian.org/projects/manpages-de/
