@@ -5,7 +5,7 @@
 Summary:	German man (manual) pages from the Linux Documentation Project
 Name:		man-pages-%{LNG}
 Version:	0.9
-Release:	10
+Release:	11
 License:	Distributable
 Group:		System/Internationalization
 Url:		http://alioth.debian.org/projects/manpages-de/
@@ -79,7 +79,6 @@ fi
 
 %files
 %doc CHANGES README COPYRIGHT
-%dir %{_mandir}/%{LNG}
 %dir %{_var}/cache/man/%{LNG}
 %ghost %config(noreplace) %{_var}/cache/man/%{LNG}/whatis
 %{_mandir}/%{LNG}/man*
@@ -88,4 +87,3 @@ fi
 %{_mandir}/%{LNG}/index.db*
 %attr(755,root,man) %{_var}/catman/%{LNG}
 %config(noreplace) %attr(755,root,root) %{_sysconfdir}/cron.weekly/makewhatis-%{LNG}.cron
-
