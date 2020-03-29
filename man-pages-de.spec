@@ -4,7 +4,7 @@
 
 Summary:	German man (manual) pages from the Linux Documentation Project
 Name:		man-pages-%{LNG}
-Version:	2.16
+Version:	4.0.0
 Release:	1
 License:	Distributable
 Group:		System/Internationalization
