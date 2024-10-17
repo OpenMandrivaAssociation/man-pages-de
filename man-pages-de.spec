@@ -8,7 +8,7 @@ Version:	4.0.0
 Release:	2
 License:	Distributable
 Group:		System/Internationalization
-Url:		http://alioth.debian.org/projects/manpages-de/
+Url:		https://alioth.debian.org/projects/manpages-de/
 Source0:	%{srcname}-%{gitrevision}.tar.gz
 BuildArch:	noarch
 BuildRequires:	man
